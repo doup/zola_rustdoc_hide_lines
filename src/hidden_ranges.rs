@@ -12,7 +12,6 @@ pub fn get_hidden_ranges<T: AsRef<str>>(code: &[T]) -> HiddenRanges {
         let n = idx + 1;
         let line = line.as_ref();
         let is_hidden = line.starts_with("# ") || line == "#";
-        // let is_empty = line.trim() == "";
 
         if is_hidden {
             if let Some(range) = curr_range.as_mut() {
@@ -71,6 +70,19 @@ mod tests {
             # 1
             # 2
             # 3
+            4
+            5
+        "#});
+
+        assert_eq!(get_hidden_ranges(&code), vec![Range { start: 1, end: 3 }]);
+    }
+
+    #[test]
+    fn single_range_no_content() {
+        let code = split_lines(indoc! {r#"
+            #
+            #
+            #
             4
             5
         "#});
