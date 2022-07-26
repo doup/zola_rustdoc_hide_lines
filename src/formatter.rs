@@ -1,11 +1,13 @@
 use std::{
-    ffi::OsStr,
-    fs::{self, DirEntry, File},
+    fs::{self, File},
     io::{self, BufRead},
     path::Path,
 };
 
-use crate::{code_block_definition::CodeBlockDefinition, hidden_ranges::get_hidden_ranges};
+use crate::{
+    code_block_definition::CodeBlockDefinition, hidden_ranges::get_hidden_ranges,
+    utils::visit_dir_md_files,
+};
 
 pub fn run(dir: &Path) {
     println!("Formatting folder: {:?}", dir);
@@ -76,26 +78,7 @@ pub fn run(dir: &Path) {
     });
 
     match result {
-        Ok(_) => println!("OK!"),
-        Err(_) => println!("Error handled?"),
+        Ok(_) => println!("Done!"),
+        Err(error) => println!("Error: {}", error),
     }
-}
-
-fn visit_dir_md_files(dir: &Path, cb: &dyn Fn(&DirEntry) -> io::Result<()>) -> io::Result<()> {
-    if dir.is_dir() {
-        for entry in fs::read_dir(dir)? {
-            let entry = entry?;
-            let path = entry.path();
-
-            if path.is_dir() {
-                visit_dir_md_files(&path, cb)?;
-            } else if let Some(ext) = path.extension().and_then(OsStr::to_str) {
-                if ext.to_lowercase() == "md" {
-                    cb(&entry)?;
-                }
-            }
-        }
-    }
-
-    Ok(())
 }
