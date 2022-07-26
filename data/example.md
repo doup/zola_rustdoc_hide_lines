@@ -37,3 +37,9 @@ Some code without hidden lines:
 ```rust
 struct NoHiddenLines;
 ```
+
+Or with annotation, but no real hidden lines:
+
+```rust,hide_lines=1
+struct NoHiddenLines;
+```
