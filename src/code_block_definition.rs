@@ -129,11 +129,26 @@ impl CodeBlockDefinition {
     }
 
     pub fn set_hidden_ranges(&mut self, hidden_ranges: HiddenRanges) {
-        let annotation = Annotation::HideLines(hidden_ranges);
+        if hidden_ranges.is_empty() {
+            // Remove
+            match self.hide_lines_idx {
+                Some(idx) => {
+                    self.annotations.remove(idx);
+                    self.hide_lines_idx = None;
+                }
+                None => (),
+            }
+        } else {
+            // Add
+            let annotation = Annotation::HideLines(hidden_ranges);
 
-        match self.hide_lines_idx {
-            Some(idx) => self.annotations[idx] = annotation,
-            None => self.annotations.push(annotation),
+            match self.hide_lines_idx {
+                Some(idx) => self.annotations[idx] = annotation,
+                None => {
+                    self.annotations.push(annotation);
+                    self.hide_lines_idx = Some(self.annotations.len() - 1);
+                }
+            }
         }
     }
 }
