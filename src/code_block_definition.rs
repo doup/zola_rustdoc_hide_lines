@@ -112,8 +112,8 @@ impl CodeBlockDefinition {
     pub fn into_string(&self) -> String {
         let mut out = String::from("```rust");
 
-        if self.annotations.len() > 0 {
-            out.push_str(",");
+        if !self.annotations.is_empty() {
+            out.push(',');
         }
 
         out.push_str(

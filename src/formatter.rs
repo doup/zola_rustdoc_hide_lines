@@ -53,7 +53,7 @@ pub fn run(dir: &Path) {
                         }
                     }
                     None => {
-                        if real_hidden_ranges.len() > 0 {
+                        if !real_hidden_ranges.is_empty() {
                             definition.set_hidden_ranges(real_hidden_ranges);
                         }
                     }

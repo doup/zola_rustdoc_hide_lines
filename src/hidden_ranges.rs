@@ -20,16 +20,16 @@ pub fn get_hidden_ranges<T: AsRef<str>>(code: &[T]) -> HiddenRanges {
                 curr_range = Some(Range { start: n, end: n });
             }
         } else {
-            if curr_range.is_some() {
-                ranges.push(curr_range.clone().unwrap());
+            if let Some(curr_range) = curr_range {
+                ranges.push(curr_range);
             }
 
             curr_range = None;
         }
     }
 
-    if curr_range.is_some() {
-        ranges.push(curr_range.unwrap());
+    if let Some(curr_range) = curr_range {
+        ranges.push(curr_range);
     }
 
     ranges
